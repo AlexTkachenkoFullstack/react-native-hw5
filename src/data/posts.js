@@ -4,20 +4,20 @@ const posts = [
     description: 'Ліс',
     comments: [
       {
-        img: require('../images/avatar.jpg'),
-        author: 'Natali Romanova',
+        id: 'coment111',
+        author: 'Roman Natalievich',
         text: 'Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!',
         date: '09 червня, 2020 | 09:20',
       },
       {
-        img: require('../images/romanNatalievich.png'),
-        author: 'Roman Natalievich',
+        id: 'coment112',
+        author: 'Natali Romanova',
         text: 'A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.',
         date: '09 червня, 2020 | 09:20',
       },
-      { 
-        img: require('../images/avatar.jpg'),
-        author: 'Natali Romanova',
+      {
+        id: 'coment113',
+        author: 'Roman Natalievich',
         text: 'Thank you! That was very helpful!',
         date: '09 червня, 2020 | 09:20',
       },
@@ -26,25 +26,26 @@ const posts = [
     locationName: 'Ukraine',
     geoLocation: { latitude: 49.2714836, longitude: 23.8227551 },
   },
-  {id:'2',
+  {
+    id: '2',
     img: 'https://rare-gallery.com/thumbs/5350552-earth-rising-cloud-sunrise-ocean-sunset-sunset-colours-sunset-sky-world-motivation-moody-inspire-amazing-travel-outdoor-blue-orange-pink-red-wafe-free-stock-photos.jpg',
     description: 'Захід на Чорному морі',
     comments: [
       {
-        img: require('../images/avatar.jpg'),
-        author: 'Natali Romanova',
+        id: 'coment211',
+        author: 'Roman Natalievich',
         text: 'Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!',
         date: '09 червня, 2020 | 09:20',
       },
       {
-        img: require('../images/romanNatalievich.png'),
-        author: 'Roman Natalievich',
+        id: 'coment212',
+        author: 'Natali Romanova',
         text: 'A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.',
         date: '09 червня, 2020 | 09:20',
       },
       {
-        img: require('../images/avatar.jpg'),
-        author: 'Natali Romanova',
+        id: 'coment213',
+        author: 'Roman Natalievich',
         text: 'Thank you! That was very helpful!',
         date: '09 червня, 2020 | 09:20',
       },
@@ -57,22 +58,34 @@ const posts = [
     img: 'https://rare-gallery.com/thumbs/5402788-house-building-shop-store-orange-pink-gondola-boat-pavement-sidewalk-bycicle-color-venice-burano-urban-photowalk-free-pictures.jpg',
     description: 'Старий будиночок у Венеції',
     comments: [
-      { 
-        img: require('../images/avatar.jpg'),
-        author: 'Natali Romanova',
+      {
+        id: 'coment311',
+        author: 'Roman Natalievich',
         text: 'Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!',
         date: '09 червня, 2020 | 09:20',
       },
       {
-        img: require('../images/romanNatalievich.png'),
-        author: 'Roman Natalievich',
+        id: 'coment312',
+        author: 'Natali Romanova',
         text: 'A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.',
         date: '09 червня, 2020 | 09:20',
       },
       {
-        img: require('../images/avatar.jpg'),
-        author: 'Natali Romanova',
+        id: 'coment313',
+        author: 'Roman Natalievich',
         text: 'Thank you! That was very helpful!',
+        date: '09 червня, 2020 | 09:20',
+      },
+      {
+        id: 'coment314',
+        author: 'Roman Natalievich',
+        text: 'Really love fgdyour most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!',
+        date: '09 червня, 2020 | 09:20',
+      },
+      {
+        id: 'coment315',
+        author: 'Roman Natalievich',
+        text: 'Really love youffdfdr fmost recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!',
         date: '09 червня, 2020 | 09:20',
       },
     ],

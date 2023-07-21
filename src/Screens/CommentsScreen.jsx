@@ -1,7 +1,8 @@
-import { View, Text, Image, StyleSheet, TextInput, Pressable, TouchableWithoutFeedback, Keyboard } from "react-native"
+import { View, Text, SafeAreaView, Image, FlatList, StyleSheet, TextInput, Pressable, TouchableWithoutFeedback, Keyboard } from "react-native"
 import { useRoute } from "@react-navigation/native"
 import { AntDesign } from '@expo/vector-icons'
  import { useState } from "react"
+import Comment from "../Components/Comment"
 const CommentsScreen = () => {
     const [textInput, setTextInput]=useState('')
     const {params:{comments, img}} = useRoute();
@@ -13,24 +14,26 @@ console.log(img)
         console.log(textInput)
     }
 
-    return (<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    return (
         <View style={styles.contaner}>
             <View style={styles.imageContainer}>
                 <Image style={styles.img} source={{uri:img}}/>
             </View>
-            <View style={styles.commentsContainer}>
-                <Text>Hello</Text>
+            <SafeAreaView style={styles.commentsContainer}>
+                <FlatList data={comments}
+                    renderItem={({ item}) => <Comment author={item.author} text={item.text} date={item.date} />}
+                        keyExtractor={item => item.id}
+                        showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false}
+                />
+            </SafeAreaView>
                 <View style={styles.inputContainer}>
-                    <TextInput onChangeText={setTextInput} style={styles.input} placeholder="Коментувати..." placeholderTextColor='rgba(189, 189, 189, 1)' value={textInput} multiline 
-        numberOfLines={1}
-                    />
+                    <TextInput onChangeText={setTextInput} style={styles.input} placeholder="Коментувати..." placeholderTextColor='rgba(189, 189, 189, 1)' value={textInput} multiline />
                     <Pressable onPress={addComment} style={styles.addCommentButton}>
                             <AntDesign name="arrowup" size={18} color="rgba(255, 255, 255, 1)" />
                     </Pressable>
                 </View>
-            </View>
-        </View>
-    </TouchableWithoutFeedback>    
+         </View>
     )
 }
 
@@ -40,7 +43,7 @@ const styles = StyleSheet.create({
         paddingTop: 32,
         paddingLeft: 16,
         paddingRight: 16,
-        paddingBottom:32,
+        paddingBottom:15,
         backgroundColor:'white',
     },
     imageContainer: {
@@ -61,14 +64,8 @@ const styles = StyleSheet.create({
         width:'100%'
     },
     commentsContainer: {
-        flex:1,
-        display: 'flex',
-        justifyContent:'space-between'
+        flex: 1,
     },
-
-
-
-
     inputContainer: {
         width: '100%',
         minHeight:50,
@@ -76,9 +73,10 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'rgba(232, 232, 232, 1)',
         backgroundColor: 'rgba(246, 246, 246, 1)',
-        borderRadius: 50,
+        borderRadius: 30,
         paddingLeft: 16,
         paddingRight: 8,
+        marginTop: 15,
         display: 'flex',
         flexDirection:'row',
         justifyContent: 'space-between',
