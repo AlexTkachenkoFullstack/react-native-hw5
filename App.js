@@ -7,7 +7,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import ImageBg from './assets/images/photoBG.png' 
 import RegistrationScreen from './src/Screens/RegistrationScreen';
 import Home from './src/Screens/Home';
-import LoginScreen  from './src/Screens/LoginScreen';
+import LoginScreen from './src/Screens/LoginScreen';
+import MapScreen from './src/Screens/MapScreen';
+import CommentsScreen from './src/Screens/CommentsScreen';
+import ArrowLeftIcon from './src/Components/ArrowLeftIcon';
 
 const MainStack=createStackNavigator()
 
@@ -25,10 +28,12 @@ export default function App() {
      <View style={styles.container}>
       <Image source={ImageBg}  style={styles.bg} />
         <NavigationContainer theme={styles.navContainer}>
-          <MainStack.Navigator initialRouteName="Login" screenOptions={{ headerShown:false}}>
-            <MainStack.Screen name='Home' component={Home}/>
-            <MainStack.Screen name='Registration' component={RegistrationScreen}/>
-            <MainStack.Screen name='Login' component={LoginScreen}  options={{  } } />
+          <MainStack.Navigator initialRouteName="Login">
+          <MainStack.Screen name='Home' component={Home} options={{headerShown:false}} />
+            <MainStack.Screen name='Registration' component={RegistrationScreen} options={{headerShown:false}}/>
+            <MainStack.Screen name='Login' component={LoginScreen} options={{headerShown:false}}/>
+            <MainStack.Screen name='MapScreen' component={MapScreen} options={{headerShown:false}}/>
+            <MainStack.Screen name='CommentsScreen' component={CommentsScreen} options={styles.CommentsScreen} />
           </MainStack.Navigator>
           <StatusBar style="auto" />
         </NavigationContainer>
@@ -48,11 +53,29 @@ const styles = StyleSheet.create({
     bottom: 0,
     left:0,
   },
- 
-  navContainer: {
+   navContainer: {
     colors: {
     background: 'transparent',
+    }
   },
+  CommentsScreen: {
+    headerLeft: ArrowLeftIcon,
+    title: 'Коментарі',
+    headerRightContainerStyle: { paddingRight: 16 },
+    headerLeftContainerStyle: { paddingLeft: 16 },
+    headerTintColor: 'rgba(33, 33, 33, 1)',
+    headerStyle: {
+          // стилізація тіні лінії хедеру
+        backgroundColor: '#FFFFFF',
+        height: 100,
+        shadowOffset: {
+            width: 0,
+            height: 0.5,
+          },
+        shadowColor: '#212121CC',
+        shadowOpacity: 0.3,
+        shadowRadius: 1.84,
+        elevation: 0,
+    },    
   }
-
 });

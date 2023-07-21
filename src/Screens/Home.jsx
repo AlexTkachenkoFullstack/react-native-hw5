@@ -6,7 +6,8 @@ import ProfileScreen from "./ProfileScreen";
 import LogOutIcon from "../Components/LogOutIcon";
 import UserIcon from "../Components/UserIcon";
 import GridIcon from "../Components/GridIcon";
-import { ButtonNewPost } from "../Components/ButtonNewPost";
+import ButtonNewPost from "../Components/ButtonNewPost";
+import ArrowLeftIcon from "../Components/ArrowLeftIcon";
 
 
 
@@ -15,11 +16,31 @@ const Tabs = createBottomTabNavigator();
 const Home = () => {
     return (
         <View style={styles.container}>
-            <Tabs.Navigator screenOptions={styles.headerStyles}>
-                <Tabs.Screen name='PostsScreen' component={PostsScreen} options={{ headerRight: LogOutIcon, tabBarButton: GridIcon, title:'Публікації' }} />
-                <Tabs.Screen name='CreatePostsScreen' component={CreatePostsScreen}  options={{tabBarButton:ButtonNewPost, title:'Створити публікацію'}}/>
-                <Tabs.Screen name='ProfileScreen'component={ProfileScreen} options={{  tabBarButton:UserIcon}}/>
-            </Tabs.Navigator>
+            <Tabs.Navigator screenOptions={styles.headerStyles} >
+                <Tabs.Screen name='PostsScreen'
+                    component={PostsScreen}
+                    options={{
+                        tabBarShowLabel: false, headerRight: LogOutIcon, title: 'Публікації',
+                        tabBarIcon: ({ focused, color, size }) => (
+                            <GridIcon name={focused ? 'isActive' : 'notActive'} size={size} color={color} />
+                        )
+                    }}/>
+                <Tabs.Screen name='CreatePostsScreen'
+                    component={CreatePostsScreen}
+                    options={{
+                        tabBarShowLabel: false, headerLeft: ArrowLeftIcon, title: 'Створити публікацію',
+                        tabBarIcon: ({ focused, color, size }) => (
+                            <ButtonNewPost name={focused ? 'isActive' : 'notActive'} size={size} color={color} />
+                    ), tabBarVisible: false, tabBarStyle: { display: "none" },
+                    }}/>
+                <Tabs.Screen name='ProfileScreen'
+                    component={ProfileScreen}
+                    options={{tabBarShowLabel: false, headerShown: false,
+                        tabBarIcon: ({ focused, color, size }) => (
+                            <UserIcon name={focused ? 'isActive' : 'notActive'} size={size} color={color} />
+                    )
+                    }}/>
+            </Tabs.Navigator> 
        </View>
     )
 }
@@ -30,12 +51,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent:'center',
-        backgroundColor:'white'
-    },
+        // backgroundColor:'white'
+    },   
     // свой общий объект стилей для хедера( а именно для контейнера навигации)
     headerStyles: {
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
         tabBarStyle: {
+            backgroundColor:'white',
             paddingTop: 9,
             display: 'flex',
             alignItems: 'center',
@@ -66,8 +88,89 @@ const styles = StyleSheet.create({
               shadowOpacity: 0.3,
               shadowRadius: 1.84,
               elevation: 0,
-            },
         },
-    
+    },
+    postScreenOptions: {
+        headerRight: LogOutIcon,
+        title: 'Публікації' 
+    },
+    createPostsScreenOptions: {
+        headerLeft: ArrowLeftIcon,
+        title: 'Створити публікацію'
+    }
+ })
 
-})
+
+
+
+
+// import React from "react";
+// import { View, Text, StyleSheet, Dimensions } from "react-native";
+// import MapView, { Marker } from "react-native-maps";
+
+
+
+// const Home = () => {
+
+//   const  Camera = {
+//     center: {
+//        latitude: 51.5001500,
+//           longitude: 31.2948000,
+//    },
+//    pitch: 30,
+//    heading: 30,
+
+//    // Only on iOS MapKit, in meters. The property is ignored by Google Maps.
+//    altitude: 1,
+
+//    // Only when using Google Maps.
+//    zoom: 20
+// }
+//   return (
+//     <View style={styles.container}>
+//           <MapView
+//         //       provider='google'
+//               style={styles.mapStyle}
+//               camera={Camera}
+//         // region={{
+//         //   latitude: 51.5001500,
+//         //   longitude: 31.2948000,
+//         //   latitudeDelta: 0.91,
+//         //   longitudeDelta: 0.90,
+//         //       }}
+//               showsUserLocation={true}
+//         //   rotateEnabled={false}
+//             //   scrollEnabled={false}
+//             // showsCompass={false}
+//         mapType='hybrid'
+//         minZoomLevel={5}
+//         onMapReady={() => console.log("Map is ready")}
+//             //   onRegionChange={() => {console.log("Region change") }, 2000)}
+//       >
+//         <Marker
+//                   title="I am here"
+//                   coordinate={{
+//                       latitude: 51.5001500,
+//                       longitude: 31.2948000,
+//                   }}
+//                   description='Hello'
+//         />
+//       </MapView>
+//     </View>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#fff",
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+//   mapStyle: {
+//     width: Dimensions.get("window").width,
+//     height: Dimensions.get("window").height,
+//   },
+// });
+
+// export default Home;

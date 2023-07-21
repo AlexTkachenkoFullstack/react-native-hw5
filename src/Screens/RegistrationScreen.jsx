@@ -1,7 +1,8 @@
 import { View, Image, Text, KeyboardAvoidingView, TextInput, Button, Platform, StyleSheet, Pressable, TouchableWithoutFeedback, Keyboard } from "react-native"
 import { useNavigation } from "@react-navigation/native";
+import { MaterialIcons } from '@expo/vector-icons'
 import { useState } from "react";
-import addImg from './/..//..//assets/images/add.png'
+
 const RegistrationScreen = () => {
         const [login, setLogine] = useState('')
         const [email, setEmail] = useState('')
@@ -33,8 +34,11 @@ const RegistrationScreen = () => {
                     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                     keyboardVerticalOffset={Platform.OS === 'ios' ? '-190' : '-260'}>
                     <View style={styles.registrationContainer}>
-                        <View style={styles.imgContainer}>
-                                <Image style={styles.addIcon} source={addImg}/>
+                        <View style={styles.avatarContainer}>
+                                <Image style={styles.avatar} source={require('.//..//images/avatar.jpg')}/>
+                                <Pressable onPress={() => { console.log('addAvatar') }} style={styles.addAvatarButton}>
+                                        <MaterialIcons style={styles.addIcon} name="add-circle-outline" size={25} color="rgba(255, 108, 0, 1)" />                       
+                                </Pressable>
                         </View>
                         <View>
                                 <Text style={styles.h2}>Peєстрація</Text>
@@ -111,37 +115,47 @@ const RegistrationScreen = () => {
 
 
 const styles = StyleSheet.create({
-    container: {
-            flex:1,
-            justifyContent:'flex-end'
+container: {
+        flex:1,
+        justifyContent:'flex-end'
     },
-        registrationContainer: {
+registrationContainer: {
         //     height: 549,
-            width:'100%',
-            backgroundColor: '#FFFFFF',
-            borderBottomLeftRadius: 0,
-            borderBottomRightRadius: 0,
-            borderTopLeftRadius: 25,
-            borderTopRightRadius: 25,
-            paddingTop: 92,
-            paddingBottom: 78,
+        width:'100%',
+        backgroundColor: '#FFFFFF',
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        paddingBottom: 78,
+        },
+avatarContainer: {
+        alignSelf: 'center',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position:'relative',
+        width: 120,
+        height: 120,
+        marginTop: -60,
+        backgroundColor: 'white',
+        borderRadius:16
     },
-        imgContainer: {
-            position: 'absolute',
-            top: -50,
-            left: '50%',
-            transform: [{ translateX: -60 }],
-            backgroundColor: '#F6F6F6',
-            width:120,
-            height: 120,
-            borderRadius: 16,
+ avatar: {
+        width: 120,
+        height: 120,
+        borderRadius:16
     },
-    addIcon: {
-            height: 25,
-            width: 25,
-            position: 'absolute',
-            top: 81,
-            left: 107,
+    addAvatarButton: {
+        width: 24,
+        height: 24,
+        position: 'absolute',
+        top: 82,
+        left: 108,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems:'center',
+        borderRadius: 50,
     },
     h2: {
             color: '#212121',
