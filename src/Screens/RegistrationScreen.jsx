@@ -2,23 +2,30 @@ import { View, Image, Text, KeyboardAvoidingView, TextInput, Button, Platform, S
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from '@expo/vector-icons'
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { registerDB } from "../redux/auth/operacions";
 
 const RegistrationScreen = () => {
         const [login, setLogine] = useState('')
         const [email, setEmail] = useState('')
         const [password, setPassword] = useState('')
         const [passwordVisibility, setPasswordVisibility] = useState(true);
-        
+        const dispatch=useDispatch()
         const navigation=useNavigation()
         
     const onRegistrationButtonPress = () => {
-                if (!login || !email || !password) {
-                    return
-            }
-        console.log('Login:',login+', email:', email+', password:', password)
-            navigation.navigate('Home', {
-                screen:'PostsScreen'
-        })
+        //         if (!login || !email || !password) {
+        //             return
+        //     }
+        //     const userData = { login, password, email }
+        //     console.log(userData)r
+            dispatch(registerDB({ email, password, login }))
+            setEmail('')
+            setLogine('')
+            setPassword('')
+        //     navigation.navigate('Home', {
+        //         screen:'PostsScreen'
+        // })
     }
 
        
