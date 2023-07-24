@@ -2,9 +2,10 @@ import { Text, View, Image, StyleSheet, FlatList } from "react-native"
 import Post from "../Components/Post";
 import posts from './/..//data/posts'
 const avatar = require('.//..//images/avatar.jpg');
+import { useSelector } from "react-redux";
 const PostsScreen = () => {
-    
-
+    const state=useSelector(state=>state.auth)
+console.log(state)
     return (
         <View style={styles.contaner}>
             <View style={styles.profileContainer}>
@@ -12,15 +13,15 @@ const PostsScreen = () => {
                     <Image style={styles.profilePhoto} source={avatar} alt='avatar'/>
                 </View>
                 <View style={styles.profileInfo}>
-                    <Text style={styles.profleName}>Natali Romanova</Text>
-                    <Text style={styles.profleEmail}>email@example.com</Text>
+                    <Text style={styles.profleName}>{state.login}</Text>
+                    <Text style={styles.profleEmail}>{state.email}</Text>
                 </View>
             </View>
             <FlatList showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
                 data={posts}
                 renderItem={({ item }) =>
-                    <Post id={item.id} img={item.img} description={item.description} comments={item.comments} locationName={item.locationName} geolocation={item.geoLocation} likes={item.likes} />}
+                    <Post id={item.id} userId={state.userId} img={item.img} description={item.description} comments={item.comments} locationName={item.locationName} geolocation={item.geoLocation} likes={item.likes} />}
                         keyExtractor={(item) => item.id}
             />
         </View>

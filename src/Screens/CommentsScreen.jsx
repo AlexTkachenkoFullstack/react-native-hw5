@@ -3,16 +3,67 @@ import { useRoute } from "@react-navigation/native"
 import { AntDesign } from '@expo/vector-icons'
  import { useState } from "react"
 import Comment from "../Components/Comment"
+import { useSelector } from "react-redux"
+import { useEffect } from "react"
+import { db } from "../firebase/config"
+import { collection, setDoc } from "firebase/firestore"
 const CommentsScreen = () => {
-    const [textInput, setTextInput]=useState('')
-    const {params:{comments, img}} = useRoute();
-console.log(img)
-
-
+    const [textInput, setTextInput] = useState('')
+    const [Massege, setMassege] = useState([]);
+    const { login, userId } = useSelector((state) => state.auth);
     
-    const addComment = (e) => {
-        console.log(textInput)
-    }
+    const {params:{ postId, img}} = useRoute();
+
+
+
+ 
+
+  const uploadPostToServer = async () => {
+    const date = new Date();
+    // const nyDate = utcToZonedTime(date, "Europe/Kiev");
+    // const dataPost = format(nyDate, "yyyy-MM-dd HH:mm:ss zzz", {
+    //   locale: uk,
+    // });
+  
+
+    await addDoc(collection(db, `setPost`, postId, "setComents"), {
+      textInput,
+      login,
+        date,
+        userId,
+    });
+
+    const commentRef = doc(db, `setPost`, postId);
+    await setDoc(
+      commentRef,
+      { commentsQuantity: Massege.length + 1 },
+      { merge: true },
+      { capital: true },
+    );
+    };
+    
+       
+  const addComment = () => {
+    uploadPostToServer();
+    setTextInput("");
+    };
+    
+
+    const getAllComments = async () => {
+    const commentsQuery = query(
+      collection(db, "setPost", postId, "setComents"),
+      orderBy("dataPost")
+    );
+
+    onSnapshot(commentsQuery, (data) => {
+      setMassege(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
+  };
+
+  useEffect(() => {
+    getAllComments();
+  }, []);
+
 
     return (
         <View style={styles.contaner}>
@@ -20,7 +71,7 @@ console.log(img)
                 <Image style={styles.img} source={{uri:img}}/>
             </View>
             <SafeAreaView style={styles.commentsContainer}>
-                <FlatList data={comments}
+                <FlatList data={Massege}
                     renderItem={({ item}) => <Comment author={item.author} text={item.text} date={item.date} />}
                         keyExtractor={item => item.id}
                         showsVerticalScrollIndicator={false}

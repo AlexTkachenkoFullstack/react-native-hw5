@@ -13,6 +13,9 @@ import CommentsScreen from "./src/Screens/CommentsScreen";
 import ArrowLeftIcon from "./src/Components/ArrowLeftIcon";
 import store from "./src/redux/store";
 import { Provider } from "react-redux";
+import { authStateChanged } from "./src/redux/auth/operations";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 const MainStack = createStackNavigator();
 
@@ -24,6 +27,10 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(authStateChanged());
+  // }, []);
 
   return (
     <Provider store={store.store}>

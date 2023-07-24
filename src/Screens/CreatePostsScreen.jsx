@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import uuid from 'react-native-uuid';
+import { db } from '../firebase/config';
+ import { collection, addDoc } from "firebase/firestore"; 
 import {
   View,
   Text,
@@ -25,6 +27,7 @@ import {
 import { Ionicons } from '@expo/vector-icons'
 import posts from './/..//data/posts'
 import { ScrollView } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 
 const CreatePostsScreen = () => {
     const navigation = useNavigation();
@@ -35,10 +38,34 @@ const CreatePostsScreen = () => {
     const [photoName, setPhotoName] = useState('');
     const [photoLocationName, setPhotoLocationName] = useState('');
     const [location, setLocation] = useState(null);
-
+    const {login, userId}=useSelector(state=>state.auth)
     const cameraRef = useRef(null);
     
+  
+   const handleSubmit = (e) => {
+      createPostStore()
 
+    clearData();
+    navigation.navigate('Home', { screen: 'PostsScreen' });
+  };
+  
+  
+  const createPostStore = async() =>{
+// Add a new document with a generated id.
+    const createdDate = Date.now();
+const docRef = await addDoc(collection(db, "setPost"), {
+  photoUrl: postPhoto,
+  photoName,
+  login,
+  userId,
+  location,
+  photoLocationName,
+  createdDate, 
+});
+console.log("Document written with ID: ", docRef.id);
+  }
+  
+  
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -99,22 +126,7 @@ const CreatePostsScreen = () => {
           setPostPhoto(result.assets[0].uri);
   };
 
-    const handleSubmit = (e) => {
-      console.log(posts)
-      const data = {
-      id:uuid.v4(),
-      img: postPhoto,
-      description: photoName,
-      likes: 0,
-      comments: [],
-      locationName: photoLocationName,
-      geoLocation: location,
-    };
-        posts.unshift(data);
-        console.log(posts)
-    clearData();
-    navigation.navigate('Home', { screen: 'PostsScreen' });
-  };
+   
 
 
  if (hasPermission === null) {

@@ -4,6 +4,7 @@ const initialState = {
   userId: null,
   login: null,
   email: null,
+  avatar: null,
   stateChange: false,
 };
 
@@ -11,14 +12,19 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    updateUser: (state, action) => {
-      state.userId = action.payload.userId;
-      state.email = action.payload.email;
-      state.login = action.payload.login;
+    updateUserProfile: (state, actions) => {
+      state.userId = actions.payload.userId;
+      state.email = actions.payload.email;
+      state.login = actions.payload.login;
+      state.avatar = actions.payload.photoUrl;
     },
-    authOut: () => initialState,
+    authStateChange: (state, actions) => {
+      state.stateChange = actions.payload.stateChange;
+    },
+    authSignOut: () => initialState,
   },
 });
 
 export default authSlice.reducer;
-export const { updateUser, authOut } = authSlice.actions;
+export const { updateUserProfile, authSignOut, authStateChange } =
+  authSlice.actions;

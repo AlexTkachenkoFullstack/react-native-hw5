@@ -4,12 +4,30 @@ import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'
 import Post from "../Components/Post";
 import posts from './/..//data/posts'
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from './/..//firebase/config'
+import { useSelector } from "react-redux"; 4
+import { doc, onSnapshot } from "firebase/firestore";
+import { useEffect, useState } from "react";
 
 const ProfileScreen = () => {
-const navigation = useNavigation()
+    const navigation = useNavigation()
+    const [dataPost, setDataPost] = useState([])
+    console.log('dataPost', dataPost)
+
     const goToLoginScreen = (event) => {
         navigation.navigate('Login')
     }
+
+const {userId, login, avatar}=useSelector(state=>state.auth)
+    const queryArray = async() => {
+        const q = query(collection(db, "setPost"), where("userId", "==", userId));
+        onSnapshot(q, (data)=>{setDataPost(data.docs.map((doc)=>({...doc.data(), id:doc.id})))})
+    }
+
+    useEffect(() => {
+        queryArray()
+    },[])
 
        return (
         <View style={styles.contaner}>
@@ -18,19 +36,19 @@ const navigation = useNavigation()
                         <Feather name="log-out" size={24} color="#BDBDBD" />
                    </Pressable>
                    <View style={styles.avatarContainer}>
-                       <Image style={styles.avatar} source={require('.//..//images/avatar.jpg')}/>
+                       {avatar && (<Image style={styles.avatar} source={{ uri: avatar }} />)}
                         <Pressable onPress={()=>{console.log('delAvatar')}} style={styles.delAvatarButton}>
                             <AntDesign name="close" size={13} color="rgba(232, 232, 232, 1)" />
                         </Pressable>
                    </View>
-                   <Text style={styles.posterName}>Natali Romanova</Text>
-                    <FlatList showsVerticalScrollIndicator={false}
-                        showsHorizontalScrollIndicator={false}
-                        data={posts}
-                        renderItem={({ item }) =>
-                            <Post id={item.id} img={item.img} description={item.description} comments={item.comments} locationName={item.locationName} geolocation={item.geoLocation} likes={item.likes} />}
-                                keyExtractor={(item) => item.id}
-                    />
+                   <Text style={styles.posterName}>{login}</Text>
+                   {dataPost.length > 0 && <FlatList showsVerticalScrollIndicator={false}
+                       showsHorizontalScrollIndicator={false}
+                       data={dataPost}
+                       renderItem={({ item }) =>
+                           <Post id={item.id} img={item.photoUrl} description={item.photoName} comments={[]} locationName={item.photoLocationName} geolocation={item.location} likes={0} />}
+                       keyExtractor={(item) => item.id}
+                   />}
                </View>
         </View>
         

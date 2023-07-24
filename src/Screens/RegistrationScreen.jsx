@@ -3,32 +3,82 @@ import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from '@expo/vector-icons'
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { registerDB } from "../redux/auth/operacions";
+import { registerDB } from "../redux/auth/operations";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import * as ImagePicker from "expo-image-picker";
+import uuid from 'react-native-uuid';
 
 const RegistrationScreen = () => {
         const [login, setLogine] = useState('')
         const [email, setEmail] = useState('')
         const [password, setPassword] = useState('')
         const [passwordVisibility, setPasswordVisibility] = useState(true);
+        const [avatar, setAvatar]=useState('')
+        const [avatarUpload, setAvatarUpload] = useState("");
         const dispatch=useDispatch()
         const navigation=useNavigation()
         
-    const onRegistrationButtonPress = () => {
-        //         if (!login || !email || !password) {
-        //             return
-        //     }
-        //     const userData = { login, password, email }
-        //     console.log(userData)r
-            dispatch(registerDB({ email, password, login }))
+
+//завантаження аватара з галереї телефона
+  const addAvatar = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 0,
+    });
+
+    if (!result.canceled) {
+      setAvatarUpload(result.assets[0].uri);
+    }
+	};
+	
+  //видалення аватара
+  const deleteAvatar = async () => {
+    setAvatarUpload(null);
+  };
+
+        //відправка avatar на farebase
+  const uploadAvatarToServer = async () => {
+    const storage = getStorage();
+    const uniqueAvatarId = uuid.v4();
+    const storageRef = ref(storage, `avatars/${uniqueAvatarId}`);
+
+    const response = await fetch(avatarUpload);
+    const file = await response.blob();
+
+    await uploadBytes(storageRef, file).then(() => {});
+
+    const processedPhoto = await getDownloadURL(
+      ref(storage, `avatars/${uniqueAvatarId}`)
+    )
+      .then((url) => {
+        return url;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    return processedPhoto;
+        };
+        
+
+
+    const submitForm = async () => {
+                if (!login || !email || !password) {
+                    return
+            }   
+            const avatarRef = await uploadAvatarToServer();
+            setAvatar(avatarRef)
+            dispatch(registerDB({ email, password, login, avatar }))
             setEmail('')
             setLogine('')
             setPassword('')
-        //     navigation.navigate('Home', {
-        //         screen:'PostsScreen'
-        // })
-    }
+            navigation.navigate('Home', {
+                screen:'PostsScreen'
+        })
+        }
+        
+    
 
-       
         
     const toggleShowPassword = () => {
                 setPasswordVisibility(!passwordVisibility)
@@ -42,8 +92,8 @@ const RegistrationScreen = () => {
                     keyboardVerticalOffset={Platform.OS === 'ios' ? '-190' : '-260'}>
                     <View style={styles.registrationContainer}>
                         <View style={styles.avatarContainer}>
-                                <Image style={styles.avatar} source={require('.//..//images/avatar.jpg')}/>
-                                <Pressable onPress={() => { console.log('addAvatar') }} style={styles.addAvatarButton}>
+                                {avatarUpload && (<Image style={styles.avatar} source={{uri: avatarUpload }}/>)}
+                                <Pressable onPress={addAvatar} style={styles.addAvatarButton}>
                                         <MaterialIcons style={styles.addIcon} name="add-circle-outline" size={25} color="rgba(255, 108, 0, 1)" />                       
                                 </Pressable>
                         </View>
@@ -103,7 +153,7 @@ const RegistrationScreen = () => {
                                         :<Text style={styles.textShowButton}>Показати</Text>}
                                 </Pressable>                 
                         </View>
-                        <Pressable style={styles.buttonRegistration} onPress={onRegistrationButtonPress}>
+                        <Pressable style={styles.buttonRegistration} onPress={submitForm}>
                                         <Text style={styles.buttonText}>Зареєструватися</Text>
                         </Pressable>
                         <View style={styles.underButtonTextContainer}>
@@ -145,7 +195,7 @@ avatarContainer: {
         width: 120,
         height: 120,
         marginTop: -60,
-        backgroundColor: 'white',
+        backgroundColor: 'grey',
         borderRadius:16
     },
  avatar: {

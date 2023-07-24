@@ -2,15 +2,20 @@ import { View, StyleSheet, Image, Text, Pressable } from "react-native"
 import { Feather } from '@expo/vector-icons'; 
 import logoImage from './/..//images/comentsIcon.png'
 import { useNavigation } from "@react-navigation/native";
-const Post = ({id, img, description, likes ,comments, locationName, geolocation }) => {
-    
+import { useSelector } from "react-redux";
+const Post = ({id, img, userId, description, likes=1 ,comments=[], locationName, geolocation }) => {
+    const state = useSelector(state => state.auth)
+    console.log(state.userId)
     const navigation = useNavigation();
     const openMap=(e)=> {
         navigation.navigate('MapScreen', geolocation)
     }
     
     const goToCommentsScreen = () => {
-        navigation.navigate('CommentsScreen', {img, comments, })
+        navigation.navigate('CommentsScreen', { 
+                    img,
+                    postId: id,
+                  })
     }
     
     return (
@@ -26,7 +31,7 @@ const Post = ({id, img, description, likes ,comments, locationName, geolocation 
             <View style={styles.textUnderPost}>
                 <View style={styles.coments}>
                     <Pressable onPress={goToCommentsScreen} style={{display:'flex',flexDirection:'row', marginRight:24}}>
-                        {comments.length
+                        {comments.length>0
                             ? <Image source={logoImage}/>
                             : <Feather name="message-circle" style={{ transform: [{ scaleX: -1 }]}} size={24} color="rgba(189, 189, 189, 1)" />}
                         <Text style={styles.comentsNumber}>{comments.length}</Text>

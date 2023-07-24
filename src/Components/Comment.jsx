@@ -1,5 +1,7 @@
-import { Text,View, Image, StyleSheet } from "react-native"
+import { Text, View, Image, StyleSheet } from "react-native"
+import { useSelector } from "react-redux"
 const Comment = ({ author, text, date }) => {
+    const state=useSelector(state=>state.auth)
     const isOwner = author === 'Natali Romanova'
 
     if (!isOwner) {
