@@ -17,8 +17,8 @@
     "ios": {
       "supportsTablet": true,
       "config": {
-    "googleMapsApiKey": "AIzaSyDijw1bsbz0VM6l7Qyy51_XBi2KYCQEbiA"
-  }
+        "googleMapsApiKey": "AIzaSyDijw1bsbz0VM6l7Qyy51_XBi2KYCQEbiA"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -27,13 +27,19 @@
       },
       "softwareKeyboardLayoutMode": "pan",
       "config": {
-    "googleMaps": {
-      "apiKey": "AIzaSyDijw1bsbz0VM6l7Qyy51_XBi2KYCQEbiA"
-    }
-  }
+        "googleMaps": {
+          "apiKey": "AIzaSyDijw1bsbz0VM6l7Qyy51_XBi2KYCQEbiA"
+        }
+      },
+      "package": "com.alex1111.homework1"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fd4b06ff-044e-497e-8a50-4c8ca9908f97"
+      }
     }
   }
 }
